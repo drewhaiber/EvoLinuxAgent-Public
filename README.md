@@ -6,21 +6,19 @@ This is beta software and should not be used in production systems. By installin
 ## Dependencies
 Required dependencies:
 ```shell
-sudo apt install build-essential libpam0g-dev autoconf automake libtool
+build-essential libpam0g-dev autoconf automake libtool libssl1.1
 ```
+These will be installed automatically as part of the installation script
 
 ## Installation
 
 ### Building from Source
 ```shell
-./autogen.sh && \
-./configure && \
-make && \
-sudo make install
+sudo ./install.sh
 ```
 
 ### Configuration
-1. Edit `/etc/evosecurity.d/config.ini`:
+1. Edit `/usr/local/etc/evosecurity.d/.config`:
 ```ini
 [api]
 access_token=   # Your access token
@@ -48,10 +46,12 @@ sudo systemctl restart sshd
 sudo adduser <username>
 ```
 
-2. Enable Evo authentication by editing `/etc/pam.d/sshd`:
+2. Enable Evo authentication by editing `/etc/pam.d/common-auth` with the following above any other PAM rules: 
 ```sh
 @include evo_common
 ```
+If Evo authentication fails, it will by default fallthrough to the default UNIX login. To disable this and allow only EVO autentication, type `#` to before the first non-commented line of the file that says `auth   [success=1 default=ignore]      pam_unix.so nullok`.
+
 
 ### Failsafe Access
 A temporary failsafe user named `user` is available to bypass MFA login methods during beta testing. Note that you must create an underlying user named `user` to enable this functionality.
