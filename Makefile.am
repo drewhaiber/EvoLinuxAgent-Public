@@ -15,9 +15,9 @@ pam_evo_common_la_LIBADD = -lpam -L$(abs_top_builddir)/vendor -levolinuxagent
 include_HEADERS = include/evopam.h
 
 # Install configuration
-sysconf_DATA = config/config.ini.default
+sysconf_DATA = config/.config.default
 configdir = $(sysconfdir)/evosecurity.d
-config_DATA = config/config.ini.default
+config_DATA = config/.config.default
 
 # PAM configuration directory
 pamconfdir = @pamconfdir@
@@ -25,8 +25,8 @@ pamconfdir = @pamconfdir@
 install-data-hook:
 	$(MKDIR_P) $(DESTDIR)$(configdir)
 	$(MKDIR_P) $(DESTDIR)$(pamconfdir)
-	if [ ! -f $(DESTDIR)$(configdir)/config.ini ]; then \
-		cp $(DESTDIR)$(configdir)/config.ini.default $(DESTDIR)$(configdir)/config.ini; \
+	if [ ! -f $(DESTDIR)$(configdir)/.config ]; then \
+		cp $(DESTDIR)$(configdir)/.config.default $(DESTDIR)$(configdir)/.config; \
 	fi
 	if [ ! -f $(DESTDIR)$(pamconfdir)/evo_common ]; then \
 		echo "auth sufficient pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
@@ -39,8 +39,8 @@ install-exec-hook:
 
 uninstall-hook:
 	rm -f $(DESTDIR)$(pamconfdir)/evo_common
-	rm -f $(DESTDIR)$(configdir)/config.ini
-	rm -f $(DESTDIR)$(configdir)/config.ini.default
+	rm -f $(DESTDIR)$(configdir)/.config
+	rm -f $(DESTDIR)$(configdir)/.config.default
 	rm -f $(DESTDIR)$(vendorlibdir)/libevolinuxagent.so.1
 	-rmdir $(DESTDIR)$(configdir) 2>/dev/null || true
 	-test -n "$(DESTDIR)" || /sbin/ldconfig
