@@ -6,8 +6,10 @@ set -e
 # Define variables
 REPO="deb http://archive.ubuntu.com/ubuntu focal main universe"
 PACKAGE="libssl1.1"
+AUTOCONF_VERSION="2.71"
 SOURCES_LIST="/etc/apt/sources.list"
 
+# Check if the repository is already in sources.list
 echo "Checking if the repository is already in sources.list..."
 if ! grep -qF "$REPO" "$SOURCES_LIST"; then
     echo "The repository was not found. Adding it to sources.list..."
@@ -18,12 +20,35 @@ else
     REPO_ADDED=false
 fi
 
+# Update package lists
 echo "Updating package lists..."
 sudo apt-get update
 
-echo "Installing $PACKAGE..."
-sudo apt-get install -y "$PACKAGE" build-essential libpam0g-dev autoconf automake libtool
+# Install required dependencies
+echo "Installing required packages..."
+sudo apt-get install -y "$PACKAGE" build-essential libpam0g-dev automake libtool wget libjansson4
 
+# Ensure the correct version of Autoconf is installed
+echo "Checking for Autoconf $AUTOCONF_VERSION..."
+AUTOCONF_INSTALLED=$(autoconf --version 2>/dev/null | grep "$AUTOCONF_VERSION" || true)
+if [ -z "$AUTOCONF_INSTALLED" ]; then
+    echo "Autoconf $AUTOCONF_VERSION not found. Attempting to download..."
+    if ! wget https://ftp.gnu.org/gnu/autoconf/autoconf-$AUTOCONF_VERSION.tar.gz; then
+        echo "Error: Failed to download Autoconf $AUTOCONF_VERSION. Please check your internet connection or the URL."
+        exit 1
+    fi
+    tar -xvzf autoconf-$AUTOCONF_VERSION.tar.gz
+    cd autoconf-$AUTOCONF_VERSION
+    ./configure
+    make
+    sudo make install
+    cd ..
+    rm -rf autoconf-$AUTOCONF_VERSION autoconf-$AUTOCONF_VERSION.tar.gz
+else
+    echo "Autoconf $AUTOCONF_VERSION is already installed."
+fi
+
+# Remove the repository if it was added temporarily
 if [ "$REPO_ADDED" = true ]; then
     echo "Removing the repository from sources.list..."
     sudo sed -i "\|$REPO|d" "$SOURCES_LIST"
@@ -32,11 +57,13 @@ else
     echo "Repository was already present, so it won't be removed."
 fi
 
+# Final cleanup
 echo "Updating package lists to clean up..."
 sudo apt-get update
 
-echo "$PACKAGE installation completed!"
+echo "$PACKAGE installation and Autoconf check completed!"
 
+# Run autogen, configure, make, and install
 echo "Running autogen"
 sudo ./autogen.sh
 
@@ -50,3 +77,4 @@ echo "Running make install"
 sudo make install
 
 echo "Evo PAM Module successfully installed"
+
