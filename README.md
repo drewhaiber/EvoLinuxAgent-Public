@@ -50,11 +50,7 @@ sudo adduser <username>
 ```sh
 @include evo_common
 ```
-In this same file, type `#` to before the first non-commented line of the file that says 
-```sh
-auth   [success=1 default=ignore]      pam_unix.so nullok
-```
-to disable the standard UNIX login. 
+
 
 
 ### Failsafe Access
