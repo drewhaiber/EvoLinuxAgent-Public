@@ -29,7 +29,7 @@ install-data-hook:
 		cp $(DESTDIR)$(configdir)/.config.default $(DESTDIR)$(configdir)/.config; \
 	fi
 	if [ ! -f $(DESTDIR)$(pamconfdir)/evo_common ]; then \
-		echo -e "auth [success=1 default=ignore] pam_succeed_if.so user=user \n auth [success=2 default=die] pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
+		echo -e "auth [success=1 default=ignore] pam_succeed_if.so user = user \n auth [success=2 default=die] pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
 	fi
 
 install-exec-hook:
@@ -38,7 +38,7 @@ install-exec-hook:
 	-test -n "$(DESTDIR)" || /sbin/ldconfig
 
 uninstall-hook:
-	sed -i '/@include evo_common/d' "/etc/pam.d/common-auth"
+	sed -i '/@include evo_common/d' "/$(DESTDIR)$(pamconfdir)/common-auth"
 	rm -f $(DESTDIR)$(pamconfdir)/evo_common
 	rm -f $(DESTDIR)$(configdir)/.config
 	rm -f $(DESTDIR)$(configdir)/.config.default
