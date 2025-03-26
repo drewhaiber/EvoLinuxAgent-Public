@@ -38,7 +38,7 @@ install-exec-hook:
 	-test -n "$(DESTDIR)" || /sbin/ldconfig
 
 uninstall-hook:
-	sed -i '/@include evo_common/d' "/$(DESTDIR)$(pamconfdir)/common-auth"
+	sed -i '/@include evo_common/d' "$(DESTDIR)$(pamconfdir)/common-auth"
 	rm -f $(DESTDIR)$(pamconfdir)/evo_common
 	rm -f $(DESTDIR)$(configdir)/.config
 	rm -f $(DESTDIR)$(configdir)/.config.default
