@@ -1,4 +1,5 @@
 # Evo Linux Agent
+An Evo Elevated Access license is required for any authentication.
 
 ## Warning
 This is beta software and should not be used in production systems. By installing this software, you agree that Evo is not liable for any problems that may arise from its use.
@@ -34,6 +35,7 @@ GSSAPIAuthentication no
 PasswordAuthentication no
 KbdInteractiveAuthentication yes
 ```
+If any of these are already set up by default on your system, be sure to change them, rather than just adding the setting.
 
 3. Restart SSH service:
 ```shell
@@ -51,6 +53,7 @@ sudo adduser <username>
 @include evo_common
 ```
 
+3. To change the email, you can edit the file at /home/{user}/.evoprofile
 
 
 ### Failsafe Access
