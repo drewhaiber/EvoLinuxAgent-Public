@@ -15,9 +15,9 @@ pam_evo_common_la_LIBADD = -lpam -L$(abs_top_builddir)/vendor -levolinuxagent
 include_HEADERS = include/evopam.h
 
 # Install configuration
-sysconf_DATA = config/.config.default
+sysconf_DATA = config/evopam.conf.default
 configdir = $(sysconfdir)/evosecurity.d
-config_DATA = config/.config.default
+config_DATA = config/evopam.conf.default
 
 # PAM configuration directory
 pamconfdir = @pamconfdir@
@@ -25,8 +25,8 @@ pamconfdir = @pamconfdir@
 install-data-hook:
 	$(MKDIR_P) $(DESTDIR)$(configdir)
 	$(MKDIR_P) $(DESTDIR)$(pamconfdir)
-	if [ ! -f $(DESTDIR)$(configdir)/.config ]; then \
-		cp $(DESTDIR)$(configdir)/.config.default $(DESTDIR)$(configdir)/.config; \
+	if [ ! -f $(DESTDIR)$(configdir)/evopam.conf ]; then \
+		cp $(DESTDIR)$(configdir)/evopam.conf.default $(DESTDIR)$(configdir)/evopam.conf; \
 	fi
 	if [ ! -f $(DESTDIR)$(pamconfdir)/evo_common ]; then \
 		echo -e "auth [success=1 default=ignore] pam_listfile.so item=user sense=allow file=/usr/local/etc/evosecurity.d/excludedusers onerr=fail \n auth [success=2 default=die] pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
@@ -49,8 +49,9 @@ uninstall-hook:
 	       	rm /etc/pam.d/common-legacy; \
 	fi
 	rm -f $(DESTDIR)$(pamconfdir)/evo_common
-	rm -f $(DESTDIR)$(configdir)/.config
-	rm -f $(DESTDIR)$(configdir)/.config.default
+	rm -f $(DESTDIR)$(configdir)/excludedusers
+	rm -f $(DESTDIR)$(configdir)/evopam.conf
+	rm -f $(DESTDIR)$(configdir)/evopam.conf.default
 	rm -f $(DESTDIR)$(vendorlibdir)/libevolinuxagent.so.1
 	-rmdir $(DESTDIR)$(configdir) 2>/dev/null || true
 	-test -n "$(DESTDIR)" || /sbin/ldconfig

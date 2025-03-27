@@ -19,7 +19,7 @@ sudo ./install.sh
 ```
 
 ### Configuration
-1. Edit `/usr/local/etc/evosecurity.d/.config`:
+1. Edit `/usr/local/etc/evosecurity.d/evopam.conf`:
 ```ini
 [api]
 access_token=   # Your access token

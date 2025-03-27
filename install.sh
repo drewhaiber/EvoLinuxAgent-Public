@@ -95,6 +95,7 @@ else
     echo "No changes made to /etc/pam.d/other; @include common-auth not found"
 fi
 
+echo -e "user" > /usr/local/etc/evosecurity.d/excludedusers
 
 echo "Evo PAM Module successfully installed"
 
