@@ -39,6 +39,15 @@ install-exec-hook:
 
 uninstall-hook:
 	sed -i '/@include evo_common/d' "$(DESTDIR)$(pamconfdir)/common-auth"
+	if [ -f "/etc/pam.d/common-auth-legacy" ]; then \
+	       	rm /etc/pam.d/common-auth-legacy \
+	fi
+	if grep -q "@include common-auth-legacy" /etc/pam.d/chfn; then \
+                sed -i 's|@include common-auth-legacy|@include common-auth|' /etc/pam.d/chfn \
+	fi
+	if grep -q "@include common-auth-legacy" /etc/pan.d/other; then \
+		sed -i 's|@include common-auth-legacy|@include common-auth|' /etc/pam.d/other\
+	fi
 	rm -f $(DESTDIR)$(pamconfdir)/evo_common
 	rm -f $(DESTDIR)$(configdir)/.config
 	rm -f $(DESTDIR)$(configdir)/.config.default
