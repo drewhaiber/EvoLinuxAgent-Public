@@ -57,7 +57,7 @@ sudo adduser <username>
 
 
 ### Failsafe Access
-To exlcude users from EVO Authentication, put the name of the user on a new line of `/usr/local/etc/evosecurity.d/excludedusers`
+To exclude users from EVO Authentication, put the name of the user on a new line of `/usr/local/etc/evosecurity.d/excludedusers`
 By default, 'user' is included in this file.
 
 ### Uninstallation
