@@ -78,6 +78,8 @@ sudo make install
 
 cp /etc/pam.d/common-auth /etc/pam.d/common-legacy
 
+sed -i '/@include evo_common/d' /etc/pam.d/common-legacy
+
 echo "Backup created: /etc/pam.d/common-legacy"
 
 # Update /etc/pam.d/chfn to use common-legacy instead of common-auth
