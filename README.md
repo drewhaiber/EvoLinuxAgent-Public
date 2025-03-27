@@ -57,7 +57,8 @@ sudo adduser <username>
 
 
 ### Failsafe Access
-A temporary failsafe user named `user` is available to bypass MFA login methods during beta testing. Note that you must create an underlying user named `user` to enable this functionality.
+To exlcude users from EVO Authentication, put the name of the user on a new line of /usr/local/etc/evosecurity.d/excludedusers
+By default, 'user' is included in this file.
 
 ### Uninstallation
 ```shell
