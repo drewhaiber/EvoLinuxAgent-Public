@@ -76,21 +76,21 @@ sudo make
 echo "Running make install"
 sudo make install
 
-cp /etc/pam.d/common-auth /etc/pam.d/common-auth-legacy
+cp /etc/pam.d/common-auth /etc/pam.d/common-legacy
 
-echo "Backup created: /etc/pam.d/common-auth-legacy"
+echo "Backup created: /etc/pam.d/common-legacy"
 
-# Update /etc/pam.d/chfn to use common-auth-legacy instead of common-auth
+# Update /etc/pam.d/chfn to use common-legacy instead of common-auth
 if grep -q "@include common-auth" /etc/pam.d/chfn; then
-    sed -i 's|@include common-auth|@include common-auth-legacy|' /etc/pam.d/chfn
-    echo "Updated /etc/pam.d/chfn to use common-auth-legacy"
+    sed -i 's|@include common-auth|@include common-legacy|' /etc/pam.d/chfn
+    echo "Updated /etc/pam.d/chfn to use common-legacy"
 else
     echo "No changes made to /etc/pam.d/chfn; @include common-auth not found"
 fi
 
 if grep -q "@include common-auth" /etc/pam.d/other; then
-    sed -i 's|@include common-auth|@include common-auth-legacy|' /etc/pam.d/other
-    echo "Updated /etc/pam.d/other to use common-auth-legacy"
+    sed -i 's|@include common-auth|@include common-legacy|' /etc/pam.d/other
+    echo "Updated /etc/pam.d/other to use common-legacy"
 else
     echo "No changes made to /etc/pam.d/other; @include common-auth not found"
 fi
