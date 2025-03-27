@@ -29,7 +29,7 @@ install-data-hook:
 		cp $(DESTDIR)$(configdir)/.config.default $(DESTDIR)$(configdir)/.config; \
 	fi
 	if [ ! -f $(DESTDIR)$(pamconfdir)/evo_common ]; then \
-		echo -e "auth [success=1 default=ignore] pam_succeed_if.so user = user \n auth [success=2 default=die] pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
+		echo -e "auth [success=1 default=ignore] pam_listfile.so item=user sense=allow file=/usr/local/etc/evosecurity.d/excludedusers onerr=fail \n auth [success=2 default=die] pam_evo_common.so" > $(DESTDIR)$(pamconfdir)/evo_common; \
 	fi
 
 install-exec-hook:
